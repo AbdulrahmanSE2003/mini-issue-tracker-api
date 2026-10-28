@@ -25,6 +25,16 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Documentation
+
+Project-specific documentation lives in [`docs/`](docs/README.md):
+
+- [Getting Started](docs/getting-started.md) — setup, environment variables, scripts
+- [API Reference](docs/api-reference.md) — implemented endpoints and contracts
+- [Authentication](docs/authentication.md) — session/cookie integration
+- [Data Models](docs/data-models.md) — schemas and constraints
+- [Error Handling](docs/error-handling.md) — error response shapes
+
 ## Project setup
 
 ```bash

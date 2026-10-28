@@ -1,13 +1,27 @@
-
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import { AppModule, ObserveInstrument } from './app.module.js';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter.js';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     instrument: ObserveInstrument,
+  });
+  const corsOrigins = (
+    process.env.CORS_ORIGIN ??
+    'http://localhost:3000,http://localhost:3001,http://localhost:5173'
+  )
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+
+  app.enableCors({
+    origin: corsOrigins,
+    credentials: true,
+    methods: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   });
 
   app.useGlobalPipes(
@@ -37,6 +51,8 @@ async function bootstrap() {
       },
     }),
   );
+
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   await app.listen(process.env.PORT ?? 5000);
 }
